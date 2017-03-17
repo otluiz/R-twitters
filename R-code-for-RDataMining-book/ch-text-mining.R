@@ -7,7 +7,11 @@
 rm(list = ls())
 gc()
 
+<<<<<<< HEAD
 
+=======
+setwd("~/workspace/R/R-code-for-RDataMining-book")
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 ###################################################
 ### code chunk number 2: ch-text-mining.rnw:27-32 (eval = FALSE)
 ###################################################
@@ -38,7 +42,11 @@ load(file = "data/rdmTweets.RData")
 for (i in 11:15) {
   cat(paste("[[", i, "]] ", sep=""))
   writeLines(strwrap(rdmTweets[[i]]$getText(), width=73))
+<<<<<<< HEAD
 } 
+=======
+}
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 
 
 ###################################################

@@ -25,6 +25,7 @@ for (i in 1:nrow(dfT)){
  
 
 ## excluindo colunas
+<<<<<<< HEAD
 #dfT$tx_BR <- NULL
 #dfT$tx_CausaAcident <- NULL
 #dfT$tx_CondPista <- NULL
@@ -36,6 +37,17 @@ for (i in 1:nrow(dfT)){
 #dfT$Hour <- NULL
 
 ### Modificado para incluir as taxas novamente p/ calcular entropia
+=======
+dfT$tx_BR <- NULL
+dfT$tx_CausaAcident <- NULL
+dfT$tx_CondPista <- NULL
+dfT$tx_DiaSemana <- NULL
+dfT$tx_Km <- NULL
+dfT$tx_RestVisibi <- NULL
+dfT$tx_TipoAcident <- NULL
+dfT$tx_TracadoVia <- NULL
+dfT$Hour <- NULL
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 
 write.csv(dfT,"../data/prfPeriodoTx.csv", row.names = FALSE)
 

@@ -1,5 +1,6 @@
 setwd("~/workspace/R/src")
 
+<<<<<<< HEAD
 # free memory
 rm(list = ls())
 gc()
@@ -78,3 +79,14 @@ for(i in 1:qtdLinhas){
 
 ### salvando alterações 
 write.csv(dfT,"../data/prfCalculoTaxas2.csv", row.names = FALSE)
+=======
+# dados$x <- NULL ## remove a coluna x
+
+df <- read.csv("../data/prfCalculoTaxas.csv") ## carrega o data frame
+qtdLinhas <- nrow(df)
+
+### eliminando colunas que não serão usadas no algoritmo
+levels(df)
+df$BR <- NULL
+df$
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b

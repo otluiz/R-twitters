@@ -6,7 +6,10 @@ gc()
 library(readr)
 dfN <- read.csv("~/workspace/R/data/prfNumerico.csv")
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 ## calcula e converte para booleano o atributo Gravidade------------------------------------------------
 for(i in 1:nrow(dfN)){
   if(dfN[i,"Gravidade"] == "FALSE") { dfN[i,"Gravidade"] = 0 }
@@ -183,8 +186,12 @@ for(i in 1:nrow(dfN)){
 ###################################################
 ### regressão linear
 ###################################################
+<<<<<<< HEAD
 
 fit <- lm(dfn$ dfN$KMArredondado + dfN$Delegacia + dfN$TipoAcident + dfN$TracadoVia + dfN$BR)
+=======
+fit <- lm(dfN$KMArredondado ~ dfN$Delegacia + dfN$TipoAcident + dfN$TracadoVia + dfN$BR)
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 fit
 
 ###################################################

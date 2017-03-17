@@ -1,9 +1,13 @@
 setwd("~/workspace/R")
 #source("src/prfLimpoCheiroso.R")
+<<<<<<< HEAD
 
 # free memory
 rm(list = ls())
 gc()
+=======
+# dados$x <- NULL ## remove a coluna x
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 
 #dfn <- read.csv("./data/LimpoCheiroso.csv") ## carrega o data frame
 #dfr <- read.csv("./data/paraAgrupaR.csv")
@@ -40,12 +44,17 @@ myRound <- function (x, convert = TRUE)  {
 ### carregando os data-frames das BRs retira-
 ### dos do dataset dfr
 #############################################
+<<<<<<< HEAD
 br101 <- read.csv(file="./data/br101.csv", header=TRUE, sep=",") ### 1 (21.862 - 2 = 21,862 ajuste)
+=======
+br101 <- read.csv(file="./data/BR101/br101.csv", header=TRUE, sep=",") ### 1 (21.862 - 2 = 21,862 ajuste)
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 br104 <- read.csv(file="./data/br104.csv", header=TRUE, sep=",") ### 2 (3.332 - 2 = 3330 ajuste)
 br110 <- read.csv(file="./data/br110.csv", header=TRUE, sep=",") ### 3 (161 -1 = 160 ajuste )
 br116 <- read.csv(file="./data/br116.csv", header=TRUE, sep=",") ### 4 (618 - 3 = 615)
 ### ------------------------------------------------------------------
 br232 <- read.csv(file="./data/br232.csv", header=TRUE, sep=",") ### 5 (13.641 - 1 = 13640)
+<<<<<<< HEAD
 br316 <- read.csv(file="./data/br316.csv", header=TRUE, sep=",") ### 6 (1.432 - 2)
 ### ------------------------------------------------------------------
 br407 <- read.csv(file="./data/br407.csv", header=TRUE, sep=",") ### 7 (1.829 - 4)
@@ -55,11 +64,26 @@ br423 <- read.csv(file="./data/br423.csv", header=TRUE, sep=",") ### 9 (1.934 - 
 
 br424 <- read.csv(file="./data/br424.csv", header=TRUE, sep=",") ## 10 (1.025) ok
 br428 <- read.csv(file="./data/br428.csv", header=TRUE, sep=",") ## 11 (2.500) ok
+=======
+br316 <- read.csv(file="./data/BR316/br316.csv", header=TRUE, sep=",") ### 6 (1.432 - 2)
+### ------------------------------------------------------------------
+br407 <- read.csv(file="./data/br407.csv", header=TRUE, sep=",") ### 7 (1.829 - 4)
+br408 <- read.csv(file="./data/BR408/br408.csv", header=TRUE, sep=",") ### 8 (2.022 - 2)
+
+br423 <- read.csv(file="./data/BR423/br423.csv", header=TRUE, sep=",") ### 9 (1.934 - 4)
+
+br424 <- read.csv(file="./data/BR424/br424.csv", header=TRUE, sep=",") ## 10 (1.025) ok
+br428 <- read.csv(file="./data/BR428/br428.csv", header=TRUE, sep=",") ## 11 (2.500) ok
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 ##### ------------------------------------------------------------------------
 
 
 #############################################
+<<<<<<< HEAD
 ### ordenando por hora
+=======
+### ordenando por data
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 #############################################
 br101.ord1 <- br101[order(br101$HoraAcident),] ### 1 ordenando
 br104.ord1 <- br104[order(br104$HoraAcident),] ### 2 ordenando
@@ -78,7 +102,11 @@ br428.ord1 <- br428[order(br428$HoraAcident),] ## 11 ordenando
 
 
 #############################################
+<<<<<<< HEAD
 ### formatando a hora
+=======
+### formatando a data
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 #############################################
 x101 <- as.POSIXct(br101$HoraAcident, format="%H:%M:%S") ### 1 ajustando a data e hora
 x104 <- as.POSIXct(br104.ord1$HoraAcident, format="%H:%M:%S") ### 2 ajustando a data e hora
@@ -120,7 +148,11 @@ br232$HoraAcident <- as.POSIXct(x232r, format = "%H:%M", tz = "GMT")
 br316$HoraAcident <- as.POSIXct(x316r, format = "%H:%M", tz = "GMT")
 br407$HoraAcident <- as.POSIXct(x407r, format = "%H:%M", tz = "GMT")
 
+<<<<<<< HEAD
 br408$HoraAcident <- as.POSIXct(x408r, format = "%H:%M", tz = "GMT")
+=======
+br408$HoraAcident <- as.POSIXct(x408, format = "%H:%M", tz = "GMT")
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 br423$HoraAcident <- as.POSIXct(x423r, format = "%H:%M", tz = "GMT")
 
 br424$HoraAcident <- as.POSIXct(x424r, format = "%H:%M", tz = "GMT")
@@ -162,8 +194,13 @@ br428.ord1.cate <- rep(c("00:00 - 04:59","05:00 - 08:59","09:00 - 13:59","14:00 
 #############################################
 ### gerando vários tipos de gráficos
 #############################################
+<<<<<<< HEAD
 png("./graficos/br101_%d.png")  ## 1
 plot(x101,br101.ord1$KM, col = ifelse(br101.ord1$KM < 40, "blue","red"), xlab = "Hora do Acidente", ylab = "Local do Acidente(KM)")
+=======
+png("./graficos/br1011_%d.png")  ## 1
+plot(x101,br101.ord1$KM, col = ifelse(br101.ord1$KM > 105, "blue","red"))
+>>>>>>> 0da81a1a3ca9bdfc9b40db075008dbf89546629b
 boxplot(br101.ord1$KM~br101.ord1.cate, col = ifelse(br101.ord1$KM < 60 && br101.ord1$KM > 110,"red", "blue"), xlab="Período do dia", ylab="Local do acidente(Km)")
 hist(br101.ord1$KM, xlab = "Quilometro (km)", ylab = "Frequência",col = ifelse(br101.ord1$KM <= 60, "blue","red") , main = "Frequência acidentes BR-101/km ")
 #ggplot(br101.ord1$KM, aes(br101$KM)) + geom_bar(position = "dodge")
