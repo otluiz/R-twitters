@@ -105,7 +105,7 @@ library(ggplot2)
 ## 
 ## The following object is masked from 'package:NLP':
 ## 
-##     annotate
+##     annotate     , y="log10" <- testar isso
 ggplot(df, aes(x=term, y=freq)) + geom_bar(stat = "identity") + xlab("Termos") + ylab("Contagem") +coord_flip()
 
 # which words are associated with 'c'?
