@@ -32,9 +32,10 @@ tweets.df <- twListToDF(tweets)
 dim(tweets.df)
 ## [1] 454  16 : exemplo 1
 ## [1] 2873 16 : exemplo 2
-library(tm)
 
 ### CARREGANDO O PACOTE: NLP (processamento lingugem natural) ###########
+library(tm)
+
 # build a corpus, and specify the source to be character vectors
 myCorpus <- Corpus(VectorSource(tweets.df$text))
 # convert to lower case # myCorpus <- tm_map(myCorpus, tolower)
@@ -59,7 +60,7 @@ myCorpus <- tm_map(myCorpus, content_transformer(removeNumPont))
 myCorpus <- tm_map(myCorpus, removePunctuation)
 
 # add two extra stop words: 'available' and 'via' 
-myStopwords <- c(stopwords("english"), "available", "via") # PARA DOCUMENTO EM INGLÊS
+#myStopwords <- c(stopwords("english"), "available", "via") # PARA DOCUMENTO EM INGLÊS
 ## add extra stop words
 myStopwords <- c(stopwords("portuguese"), "ia", "faria", "ainda", "caminho", "alcool", "acid", "veic", "ferido")
 # remove 'r' and 'big' from stopwords
@@ -160,9 +161,9 @@ for (i in 1:k) {
 layout(matrix(c(1, 2), 1, 2)) # set to two graphs per page
 plot(pamResult, col.p = pamResult$clustering)
 
-#############################################################################
-#######################   TOPIC MODEL    ####################################
-#############################################################################
+###########################################################################
+#######################   TOPIC MODEL    ##################################
+###########################################################################
 
 dtm <- as.DocumentTermMatrix(tdm)
 ###########################################################################

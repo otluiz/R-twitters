@@ -24,7 +24,7 @@ myStopwords <- c(stopwords('english'), "available", "dogs") # add two additional
 myStopwords <- setdiff(myStopwords, c("r", "big")) # remove 'r' and 'big' from stopwords
 myCorpus <- tm_map(myCorpus, removeWords, myStopwords) # remove stopwords
 #fix up 1) differences between us and aussie english 2) general errors
-myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = “organiz”, replacement = “organ”)
+myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = 'organiz', replacement = 'organ')
 
 # ---- Stemming Words
 
@@ -37,7 +37,7 @@ inspect(myCorpus)
 tm_map(myCorpus, content_transformer(function(x, d)
   paste(stemCompletion(strsplit(stemDocument(x), ' ')[[1]], d), collapse = ' ')), dictCorpus)
 # fix up 1) differences between us and aussie english 2) general errors
-myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = “organiz”, replacement = “organ”)
+myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = 'organiz', replacement = 'organ')
 inspect(myCorpus)
 inspect(dictCorpus)
 
@@ -48,7 +48,7 @@ inspect(myDtm)
 
 # get tf-idf weighting 
 myDtm <- TermDocumentMatrix(myCorpus, control = list(wordLengths = c(1, Inf), weighting = function(x) weightTfIdf(x, normalize = FALSE)))
-
+inspect(myDtm)
 # Based on the above matrix, many data mining tasks can be done, for example, clustering, classification and association analysis.
 
 # ----- Frequent Terms and Associations
@@ -59,10 +59,10 @@ findFreqTerms(myDtm, lowfreq=2)
 findAssocs(myDtm, 'r', 0.30)
 
 #read 1000 txt articles from directory data/txt
-corpus  <-Corpus(DirSource("data/txt"), readerControl = list(blank.lines.skip=TRUE))
+#corpus  <-Corpus(DirSource("data/txt"), readerControl = list(blank.lines.skip=TRUE))
 
 #or compute cosine distance among documents
-dissimilarity(tdm, method = "cosine")
+#dissimilarity(tdm, method = "cosine")
 
 library(wordcloud)
 wordcloud(myCorpus, scale=c(5,0.5), 
@@ -72,6 +72,10 @@ wordcloud(myCorpus, scale=c(5,0.5),
 )
 
 data("crude")
+# Term Document Matrix
+#tdm <- TermDocumentMatrix(crude)
+#findFreqTerms(tdm, 2, 3)
+
 # Document Term Matrix
 dtMatrix <- DocumentTermMatrix(crude)
 # created a Term-Term Adjacency Matrix.
