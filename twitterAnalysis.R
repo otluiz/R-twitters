@@ -27,9 +27,10 @@ fetchHashtag <- function(hashtag,number) {
   return(tweets)
 }
 
-#########################################################################
-###################  LIMPANDO O TEXTO   #################################
-####################                  ###################################
+##########################################################################
+###################   PREPROCESSAMENTO   #################################
+####################   limpar o textos  ##################################
+##########################################################################
 makeCorpus <- function(text){ #Function for making corpus and cleaning the tweets fetched
   twitterdf <- do.call("rbind", lapply(text, as.data.frame)) #store the fetched tweets as a data frame
   twitterdf$text <- sapply(twitterdf$text,function(row) iconv(row, "latin1", "ASCII", sub=""))#Removing emoticons from tweets
@@ -55,7 +56,6 @@ for (i in 1:100){
   cat(paste("[[", i, "]] ", sep=""))
   writeLines(strwrap(corp[[i]], width=73))
 }
-
 
 #Wordcloud
 makeWordcloud<-function (getText){ #plotting wordcloud
@@ -110,7 +110,6 @@ kMeans<-function (content){ #k-means clustering
   }
 }
 
-
 kMediod<-function (content){
   twicorpus<-makeCorpus(content)
   myTdm<-TermDocumentMatrix(twicorpus, control=list(wordLengths=c(4,Inf)))
@@ -128,7 +127,6 @@ tSentimen<-function (content){
   (poldat <- with(dataframe, polarity(text))) #getting polarity of the tweets
   return(poldat)
 }
-
 
 #Just for example, edit the hashtag and number of tweets to fetch
 get<-fetchHashtag("#CocaCola",200) # fetching tweets of coca cola

@@ -21,8 +21,6 @@ for(i in 1:nrow(dfn)){
   dfn$TotMortos <- NULL ## exclui a coluna TotMortos
 }
 ###-----------------------------------------------------------------------------------------------------
-
-
 tdBr101 <- subset(dfn,BR=='101')
 tdBr104 <- subset(dfn,BR=='104')
 tdBr110 <- subset(dfn,BR=='110')
