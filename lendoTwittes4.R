@@ -32,9 +32,10 @@ tweets.df <- twListToDF(tweets)
 dim(tweets.df)
 ## [1] 454  16 : exemplo 1
 ## [1] 2873 16 : exemplo 2
-library(tm)
 
 ### CARREGANDO O PACOTE: NLP (processamento lingugem natural) ###########
+library(tm)
+
 # build a corpus, and specify the source to be character vectors
 myCorpus <- Corpus(VectorSource(tweets.df$text))
 # convert to lower case # myCorpus <- tm_map(myCorpus, tolower)
@@ -168,9 +169,9 @@ for (i in 1:k) {
 layout(matrix(c(1, 2), 1, 2)) # set to two graphs per page
 plot(pamResult, col.p = pamResult$clustering)
 
-#############################################################################
-#######################   TOPIC MODEL    ####################################
-#############################################################################
+###########################################################################
+#######################   TOPIC MODEL    ##################################
+###########################################################################
 
 dtm <- as.DocumentTermMatrix(tdm)
 ###########################################################################

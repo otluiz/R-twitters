@@ -1,8 +1,8 @@
-setwd("~/workspace/R/src")
+setwd("~/workspace/R/")
 
 # dados$x <- NULL ## remove a coluna x
 
-dl <- read.csv("../data/prfLimpoDelegacias.csv") ## carrega o data frame
+dl <- read.csv("./data/prfLimpoDelegacias.csv") ## carrega o data frame
 qtdLinhas <- nrow(dl)
 
 levels(dl$RestrVisibili) 

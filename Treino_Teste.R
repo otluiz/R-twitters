@@ -5,7 +5,7 @@ rm(list = ls())
 gc()
 
 #-------[ TODO o dataset para ser separado em conjunto de treinamento e testes  ]------------------------
-dfT <- read.csv("../data/prfCalculoTaxas2.csv") ## carrega o data frame
+dfT <- read.csv("./data/prfCalculoTaxas2.csv") ## carrega o data frame
 
 attach(dfT)
 str(dfT)
