@@ -45,6 +45,8 @@ df$TipoAuto <- NULL
 df.Br101 <- subset(df, BR=='101')
 df.Br232 <- subset(df, BR=='232')
 
+write.csv(df.Br101,"./data/BR101/RNNLiteral.csv", row.names = FALSE)
+write.csv(df.Br232,"./data/BR232/RNNLiteral.csv", row.names = FALSE)
 ## Procura em algum Km em determinada hora um acidente e conta-o
 ## Km: quilometro onde há uma ocorrência
 ## hr: hora em que ocorreu
@@ -59,7 +61,7 @@ myCont <- function (hr, km, ds)  {
   return(y)
 }
 
-### função para crirar uma matriz de n rows e m columns e h alturas
+### função para crirar uma matriz de n linhas e m col e h alt
 criarMatriz <- function(lin, col, alt) {
   arr = array(0, dim=c(lin, col, alt));
   l<-list(length=dim(arr)[3]);
@@ -74,7 +76,7 @@ criarMatrizFinal <- function(lin,col, alt){
   r <- criarMatriz(lin,col, alt)
   for(i in 0:(lin - 1)){
     for(j in 0:(col - 1)){
-      for (k in 0:(alt - 1)){
+      for (k in 1:(alt)){
         r[i,j,k] <- myCont(i,j,k)
       }
     }
@@ -83,11 +85,11 @@ criarMatrizFinal <- function(lin,col, alt){
 }
 
 
-l = 24
-c = max(df.Br101$KMArredondado)
-a = 7
+hr = 24
+km = max(df.Br101$KMArredondado)
+ds = 7
 
-criarMatrizFinal(l,c,a)
+matrizMortos <- criarMatrizFinal(hr,km,ds)
 
 
 
@@ -106,8 +108,18 @@ criarMatriz <- function(lin,col, alt) {
   return(my.matrix)
 }
 
-r = array(1, dim=c(6,4,3));
+r = array(2, dim=c(8,9,2)); ## cria um array de 3 dimensões
 l<-list(length=dim(r)[3]);
 for (i in 1:dim(r)[3]){
   l[[i]]<-r[,,i];
 }
+tabela <- data.frame(r)  ## transforma uma matriz "r" em data frame
+write.csv(tabela,"./data/BR101/tabela.csv", row.names = FALSE) ## escreve uma matriz em formato csv
+
+### Matriz em 3 dimensões com nomes nas colunas e linhas e altura
+(tres_d_array <- array(1:24, dim = c(4,3,2), dimnames = list(
+  c("um", "dois", "três","quatro"),
+  c("ein", "zwei", "drei"),
+  c("un", "deux"))
+))
+
