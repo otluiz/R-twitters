@@ -31,15 +31,15 @@ write.csv(df.Br101,"./data/BR101/RNNLiteral.csv", row.names = FALSE)
 write.csv(df.Br232,"./data/BR232/RNNLiteral.csv", row.names = FALSE)
 
 # Procura em algum Km em determinada hora um acidente e conta-o
-myCont <- function (km,hr)  {
-  y = 0
-  for(i in 1:nrow(df.Br101)){
-    if (df.Br101[i,13] == km && df.Br101[i,12] == hr) {
-      y = y + df.Br101[i,10]
-    }
-  }
-  return(y)
-}
+#myCont <- function (km,hr)  {
+#  y = 0
+#  for(i in 1:nrow(df.Br101)){
+#    if (df.Br101[i,13] == km && df.Br101[i,12] == hr) {
+#      y = y + df.Br101[i,10]
+#    }
+#  }
+#  return(y)
+#}
 
 ### função para crirar uma matriz de n rows e m columns
 criarMatriz <- function(lin,col) {
@@ -57,11 +57,6 @@ criarMatrizFinal <- function(lin,col){
   for(i in 1:nrow(df.Br101)){
     r[df.Br101[i,8]+1,df.Br101[i,9]+1] <- r[df.Br101[i,8]+1,df.Br101[i,9]+1] + df.Br101[i,7]
   }
-#  for(i in 0:(lin - 1)){
-#    for(j in 0:(col - 1)){
-#      r[i,j] <- myCont(i,j)
-#    }
-#  }
   return(r)
 }
 
