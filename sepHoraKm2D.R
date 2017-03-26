@@ -59,12 +59,10 @@ criarMatrizFinal <- function(lin,col){
   }
   return(r)
 }
-
-
+### Definir número de linhas e colunas para a matriz de mortos
 l = 24
 c = max(df.Br101$KMArredondado)+1
-
-
+### Criar a Matriz de Mortos que conterá o número de mortos em cada KM / Hora
 s = criarMatrizFinal(l,c)
 
 ### Converte para data frame & Alterar o no me da linha e coluna
@@ -72,52 +70,21 @@ dfs <- as.data.frame(s)
 colnames(dfs) = c(0:(c -1))
 row.names(dfs) = c(0:(l -1))
 
-write.csv(dfs,"./data/BR101/MatrizMortos.csv", row.names = FALSE)
+write.csv(dfs,"./data/BR101/MatrizMortos2D.csv", row.names = FALSE)
 
 ################################################################################
 ############################             #######################################
 ###########################     BR 232      ####################################
 ############################             #######################################
 ################################################################################
-
-## calcula quantidade de mortos o atributo Gravidade------------------------------------------------
-#df <- read.csv("./data/LimpoCheiroso.csv") ## carrega o data frame
-
-#### limpando dados
-#df$Binario <- NULL
-#df$Gravidade <- NULL
-#df$DiaDaSemana <- NULL
-#df$Municipio <- NULL
-##df$TotFerVivos <- NULL
-#df$TipoAuto <- NULL
-
-
-###-----------------------------------------------------------------------------------------------------
-#df.Br101 <- subset(df,BR=='101')
-#df.Br232 <- subset(df,BR=='232')
-
-#write.csv(df.Br101,"./data/BR101/RNNLiteral.csv", row.names = FALSE)
-#write.csv(df.Br232,"./data/BR232/RNNLiteral.csv", row.names = FALSE)
-
-# Procura em algum Km em determinada hora um acidente e conta-o
-myCont <- function (km,hr)  {
-  y = 0
-  for(i in 1:nrow(df.Br232)){
-    if (df.Br232[i,13] == km && df.Br232[i,12] == hr) {
-      y = y + df.Br232[i,10]
-    }
-  }
-  return(y)
-}
-
 ### função para crirar uma matriz de n rows e m columns
-criarMatriz <- function(lin,col) {
-  my.matrix <- c()
-  for(i in 1:lin){
-    my.matrix <- rbind(my.matrix, rep(0,col))
-  }  
-  return(my.matrix)
-}
+#criarMatriz <- function(lin,col) {
+#  my.matrix <- c()
+#  for(i in 1:lin){
+#    my.matrix <- rbind(my.matrix, rep(0,col))
+#  }  
+#  return(my.matrix)
+#}
 
 ### Cria uma matriz genérica 2 X 2
 criarMatrizFinal <- function(lin,col){
@@ -138,7 +105,7 @@ df232 <- as.data.frame(mm232)
 colnames(df232) = c(0:(c -1))
 row.names(df232) = c(0:(l -1))
 
-write.csv(df232,"./data/BR232/MatrizMortos.csv", row.names = FALSE)
+write.csv(df232,"./data/BR232/MatrizMortos2D.csv", row.names = FALSE)
 
 ################################################################################
 ############################             #######################################
@@ -146,10 +113,7 @@ write.csv(df232,"./data/BR232/MatrizMortos.csv", row.names = FALSE)
 ############################             #######################################
 ################################################################################
 
-## calcula quantidade de mortos o atributo Gravidade------------------------------------------------
-#df <- read.csv("./data/LimpoCheiroso.csv") ## carrega o data frame
-
-###-----------------------------------------------------------------------------------------------------
+###-----------------------------------------------------------------------------
 #df.Br101 <- subset(df,BR=='101')
 #df.Br232 <- subset(df,BR=='232')
 df.Br104 <- subset(df,BR=='104')
