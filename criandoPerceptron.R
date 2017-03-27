@@ -127,16 +127,43 @@ plot(rbind(A, B), type = "n")
 points(A, col="red")
 points(B, col="blue")
 
-erros = NULL
+erros = NULL;
 for(w0 in  seq(0.1, -3) ){
   for(w1 in  seq(0.2, 2) ){
-    for(w2 in  seq(0.2, 3) ){
+    for(w2 in  seq(0.2, 3) ){ 
       E = erro(A, B, w0, w1, w2)
       erros = c(erros, E)
-      # a = -1; b=1.8 ## vou variar em trono dessa reta para não procurar feito louco em todo lugar {:^)}
-      abline(-w0/w2, -w1/w2)
-    }
+      abline(-w0/w2, -w1/w2, col="grey") # a = -1; b=1.8 
+    }                                    ## vou variar em trono dessa reta para procurar
   }
 }
 
+
+### Esta função tem erros
+aprendizadoForcaBruta(A, B){
+  erros = NULL; erroMin = 100 #; w0Min = 100; w1Min = 100; w2Min = 100
+  for(w0 in  seq(0.1, -3) ){
+    for(w1 in  seq(0.2, 2) ){
+      for(w2 in  seq(0.2, 3) ){
+        E = erro(A, B, w0, w1, w2)
+        if (E < erroMin){
+          w0Min = w0
+          w1Min = w1
+          w2Min = w2
+          erroMin = E
+        }
+        erros = c(erros, E)
+        if (erroMin == 0){ return(c(w0Min, w1Min, w2Min)) }
+        # a = -1; b=1.8 ## vou variar em trono dessa reta para não procurar feito louco em todo lugar {:^)}
+        #abline(-w0/w2, -w1/w2, col="grey")
+      }
+    }
+  }
+  return(c(w0Min,w1Min, w2Min))
+}
+
+
+
+
+summary(erros)
 
