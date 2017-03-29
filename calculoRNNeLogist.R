@@ -17,14 +17,14 @@ attach(dfrnn)
 dfrnn.novo <- dfrnn[order(KMArredondado, Hour),]
 
 #### remover colunas desnecessárias
-dfrnn$TipoAuto <- NULL
-dfrnn$Delegacia <- NULL
-dfrnn$CondPista <- NULL
-dfrnn$TracadoVia <- NULL
-dfrnn$TipoAcident <- NULL
-dfrnn$CausaAcident <- NULL
-dfrnn$tx_DiaSemana <- NULL
-dfrnn$RestrVisibili <- NULL
+#dfrnn$TipoAuto <- NULL
+#dfrnn$Delegacia <- NULL
+#dfrnn$CondPista <- NULL
+#dfrnn$TracadoVia <- NULL
+#dfrnn$TipoAcident <- NULL
+#dfrnn$CausaAcident <- NULL
+#dfrnn$tx_DiaSemana <- NULL
+#dfrnn$RestrVisibili <- NULL
 
 
 ### Arredondar variáveis para 3 casas decimais
@@ -38,9 +38,9 @@ for(i in 1:nrow(dfrnn)){
 
 str(Hour)
 ### Gravar uma cópia para, os "for" são demorados
-write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
+#write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
 ### Ler a cópia gravada e prosseguir
-dfrnn <- read.csv("./data/prfParaRNN.csv")
+#dfrnn <- read.csv("./data/prfParaRNN.csv")
 attach(dfrnn)
 
 ### Corverter dados categóricos para numéricos
@@ -49,12 +49,6 @@ for(i in 1:nrow(dfrnn)){
   if(dfrnn[i,"Gravidade"] == "FALSE") { dfrnn[i,"Gravidade"] = 0 }
   if(dfrnn[i,"Gravidade"] == "TRUE" ) { dfrnn[i,"Gravidade"] = 1 }
 }
-
-### Gravar uma cópia para, os "for" são demorados
-write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
-### Ler a cópia gravada e prosseguir
-dfrnn <- read.csv("./data/prfParaRNN.csv")
-attach(dfrnn)
 
 ### ajustando a variável Dia da semana, tem que criar uma nova coluna
 for(i in 1:nrow(dfrnn)){
@@ -67,12 +61,6 @@ for(i in 1:nrow(dfrnn)){
   if(dfrnn[i, "DiaDaSemana"] == "Domingo") { dfrnn[i, "DiaSemana"] = 7 }
 }
 
-dfrnn$DiaDaSemana <- NULL
-
-### Ler a cópia gravada e prosseguir
-#dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
-attach(dfrnn)
-
 ### agrupando hora em períodos
 for (i in 1:nrow(dfrnn)){
   if (dfrnn[i,"Hour"] >= 0 & dfrnn[i,"Hour"] < 5 ) {dfrnn[i, "Periodo"] =  1 }   # Madrugada
@@ -81,8 +69,20 @@ for (i in 1:nrow(dfrnn)){
   if (dfrnn[i,"Hour"] >= 18 & dfrnn[i,"Hour"] < 24 ) {dfrnn[i, "Periodo"] =  4}  # Noite
 }
 
+
 ### Gravar uma cópia para, os "for" são demorados
 write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
+
+#####################################################################################
+### Ler a cópia gravada e prosseguir
+#dfrnn <- read.csv("./data/prfParaRNN.csv")
+attach(dfrnn)
+
+### Ler a cópia gravada e prosseguir
+#dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
+dfrn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
+attach(dfrnn)
+
 
 ### Separar as BRs da rota pretendida (BR 101 X BR 232)
 dfrnn.BR101 <- subset(dfrnn,BR=='101')
@@ -94,10 +94,10 @@ erroBR101 <- 0.812
 erroBR232 <- 0.767
 
 ### calculando Prob. ser  Gravidade
-tx_Gravid101 = dfrnn.BR101$tx_RestVisibi * dfrnn.BR101$tx_CondPista * dfrnn.BR101$tx_TracadoVia * erroBR101 + dfrnn.BR101$Gravidade
+tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) *  erroBR101 + dfrnn.BR101$Gravidade
 dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
 
-tx_Gravid232 = dfrnn.BR232$tx_RestVisibi * dfrnn.BR232$tx_CondPista * dfrnn.BR232$tx_TracadoVia * erroBR232 + dfrnn.BR232$Gravidade
+tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) *  erroBR232 + dfrnn.BR232$Gravidade
 dfrnn.BR232["tx_Gravidade"] <- round(tx_Gravid232,3)
 ### Ordenar as colunas
 

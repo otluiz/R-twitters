@@ -27,6 +27,7 @@ tweets <- userTimeline("PRF191PE", n = 3200)
 ####################                  ###################################
 ### converte os dados para data frame
 # tweets.df <- do.call("rbind", lapply(tweets, as.data.frame))
+
 dfTweets <- twListToDF(tweets)
 dim(dfTweets)
 names(dfTweets)
@@ -106,6 +107,8 @@ wordcloud(myCorpus, scale=c(5,0.5),
           ,colors=brewer.pal(10, "Dark2")
 )
 
+
+######################################################################################
 data("crude")
 # Term Document Matrix
 #tdm <- TermDocumentMatrix(crude)
