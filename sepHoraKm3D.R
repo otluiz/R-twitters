@@ -7,11 +7,12 @@ gc()
 
 #rm(df) ## remove antigos objetos
 
-### Separação dos Data frames. Estes data frames são gerados pelo sript
+### Separação dos Data frames. Estes data frames são gerados pelo script
 ### calculoRNNeLogist.R onde a equação e a variável tx_Gravid232 é gerado
 df.Br101 <- read.csv("./data/BR101/RNN.csv")
-df.Br232 <- read.csv("./data/BR232/RNN.csv")
+df.Br232 <- read.csv("./data/BR232/RNN.csv") ## separador "," (vírgula)
 
+df.Br116 <- read.csv2("./data/BR116/RNN.csv") ## separador ";" (ponto e vírgula)
 #################################################################################
 ######################### Equação para predição #################################
 #################################################################################
@@ -120,3 +121,40 @@ salvaMatriz <- function(rs) {
 }
 
 salvaMatriz(rs)  ## grava no diretŕio ./data/Br232 arquivos do tipo MatrizGravidade3D -> correspondente a matriz de mortos de segunda-feira
+
+################################################################################
+############################             #######################################
+###########################     BR 116      ####################################
+############################             #######################################
+################################################################################
+#nrow(df.Br101)
+#### Criar uma matriz já inicializada com todas as entradas em zero
+criarMatrizFinal2 <- function(lin,col,alt){
+  r <- criarMatriz(lin,col,alt)
+  for(i in 1:nrow(df.Br116)){
+    r[df.Br116[i,3]+1,df.Br116[i,4]+1,df.Br116[i,10]] <- r[df.Br116[i,3]+1,df.Br116[i,4]+1,df.Br116[i,10]] + df.Br116[i,12]
+  }
+  return(r)
+}
+
+l = 24  ## hora 0 - 23
+c = max(df.Br116$KMArredondado)+1 ## quilômetro máximo da rodovia
+a = 7    ## correspondente aos dias da semana
+rs = criarMatrizFinal2(l,c,a)
+
+################################################################################
+### Salvar cada dia da semana em um arquivo diferente, ex.: MatrizMortos3d1.csv, MatrizMortos3D2.csv...
+### Cada linha e coluna estão numeradas a partir do Km(0) e Hora(0)
+salvaMatriz <- function(rs) {
+  for(i in 1:7){
+    dfs <- as.data.frame(rs[,,i])
+    colnames(dfs) = c(0:(c -1))
+    row.names(dfs) = c(0:(l -1))
+    nomePart = paste("./data/BR116/MatrizGravidade3D",i, sep = "", collapse = NULL) 
+    tipoExte = ".csv"
+    nomeArq = paste(nomePart, tipoExte, sep = "") 
+    write.csv2(dfs,nomeArq, row.names = TRUE)
+  }
+}
+
+salvaMatriz(rs)  ## grava no diretŕio ./data/Br116 arquivos do tipo MatrizGravidade3D -> correspondente a matriz de mortos de segunda-feira

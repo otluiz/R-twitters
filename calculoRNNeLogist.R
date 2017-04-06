@@ -80,30 +80,49 @@ attach(dfrnn)
 
 ### Ler a cópia gravada e prosseguir
 #dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
-dfrn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
-attach(dfrnn)
+dfrn <- read.csv("./data/prfParaRNN.csv")
+attach(dfrn)
 
 
 ### Separar as BRs da rota pretendida (BR 101 X BR 232)
-dfrnn.BR101 <- subset(dfrnn,BR=='101')
-dfrnn.BR232 <- subset(dfrnn,BR=='232')
+dfrn.BR101 <- subset(dfrn,BR=='101')
+dfrn.BR232 <- subset(dfrn,BR=='232')
+dfrn.BR104 <- subset(dfrn,BR=='104')
+dfrn.BR116 <- subset(dfrn,BR=='116')
 
 
 ### incluindo o fator de precisão em cada data.frame Vindo da Árvore de Decisão
 erroBR101 <- 0.812
-erroBR232 <- 0.767
+erroBR232 <- 0.787
+erroBR104 <- 0.957
+erroBR116 <- 0.669
 
 ### calculando Prob. ser  Gravidade
+## BR 101
 tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) *  erroBR101 + dfrnn.BR101$Gravidade
 dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
 
+## BR 232
 tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) *  erroBR232 + dfrnn.BR232$Gravidade
 dfrnn.BR232["tx_Gravidade"] <- round(tx_Gravid232,3)
-### Ordenar as colunas
+
+## BR 104
+tx_Gravid104 = (dfrn.BR104$tx_RestVisibi + dfrn.BR104$tx_CondPista + dfrn.BR104$tx_TracadoVia) *  erroBR104 + dfrn.BR104$Gravidade
+dfrn.BR104["tx_Gravidade"] <- round(tx_Gravid104,3)
+
+## BR 116
+tx_Gravid116 = (dfrn.BR116$tx_RestVisibi + dfrn.BR116$tx_CondPista + dfrn.BR116$tx_TracadoVia) *  erroBR116 + dfrn.BR116$Gravidade
+dfrn.BR116["tx_Gravidade"] <- round(tx_Gravid116,3)
+
+
 
 ### exportando dados CSV e ARFF (para Weka)
 write.csv(dfrnn.BR101,"./data/BR101/RNN.csv", row.names = FALSE)
 write.csv(dfrnn.BR232,"./data/BR232/RNN.csv", row.names = FALSE)
+
+## COM ";" SEPARADOR
+write.csv2(dfrn.BR104,"./data/BR104/RNN.csv", row.names = FALSE)
+write.csv2(dfrn.BR116,"./data/BR116/RNN.csv", row.names = FALSE)
 
 library(RWeka)
 write.arff(dfrnn.BR101,"../weka/BR101/RNN.arff", eol = "\n")
@@ -111,9 +130,9 @@ write.arff(dfrnn.BR232,"../weka/BR232/RNN.arff", eol = "\n")
 
 
 ######## Outras BRs #########
-BR104 <- subset(dfrnn,BR=='104')
+#BR104 <- subset(dfrnn,BR=='104')
 BR110 <- subset(dfrnn,BR=='110')
-BR116 <- subset(dfrnn,BR=='116')
+#BR116 <- subset(dfrnn,BR=='116')
 BR316 <- subset(dfrnn,BR=='316')
 BR407 <- subset(dfrnn,BR=='407')
 BR408 <- subset(dfrnn,BR=='408')
