@@ -8,10 +8,10 @@ gc()
 #############################################
 ### define variáveis para o token Twitter
 #############################################
-consumer_key    <- 	'QkvIzuPMG52V1pP9G5nRZmb5D'
-consumer_secret <- 'BR6yyrmrZpmsGT0YOJ4QBWEX1VbnCd4gwa0IiNm6nbm7ZzwdOC'
-access_token    <- '528603134-tltzs4fmhiBdvY1UpZucqzwzNADcsyepQw2ZJ1bL' 
-access_secret   <- '58KZ6s8j2rF9w5b2bTdV2tfGRepg2rjHd1pscHxqNtFLc'
+consumer_key    <- 	'gMgM98BADb4kiH4Y0M7AD5gw3'
+consumer_secret <- 'YA7l1GF6iLfdd8H0ybS9iBgBKXIhsWm0Nu89mHpnMnPcqpwYnZ'
+access_token    <- '528603134-F4XrgrN8v5jwzxEvxeHIKjyMxajclVEVnToGYS7x' 
+access_secret   <- 'GALsD4zAoopfgLrpBPR4apboUsN6tc0bMo3pLTeAc7nW1'
 
 #############################################################
 ### Este é um exemplo do sítio: https://rstudio-pubs-static.s3.amazonaws.com/66739_c4422a1761bd4ee0b0bb8821d7780e12.html
@@ -22,6 +22,8 @@ token <- setup_twitter_oauth(consumer_key, consumer_secret, access_token, access
 
 ### carrega a time line do Tweeter
 tweets <- userTimeline("PRF191PE", n = 3200)
+
+
 #########################################################################
 ###################  LIMPANDO O TEXTO   #################################
 ####################                  ###################################
@@ -35,41 +37,41 @@ names(dfTweets)
 library(tm)
 
 myCorpus <- Corpus(VectorSource(dfTweets$text))              # build a corpus, and specify the source to be character vectors
-myCorpus <- tm_map(myCorpus, content_transformer(tolower))   # tm v0.6 # convert to lower case # myCorpus <- tm_map(myCorpus, tolower)
-myCorpus <- tm_map(myCorpus, removePunctuation)              # remove punctuation
-myCorpus <- tm_map(myCorpus, removeNumbers)                  # remove numbers
+myCorpus1 <- tm_map(myCorpus, content_transformer(tolower))   # tm v0.6 # convert to lower case # myCorpus <- tm_map(myCorpus, tolower)
+myCorpus2 <- tm_map(myCorpus1, removePunctuation)              # remove punctuation
+myCorpus3 <- tm_map(myCorpus2, removeNumbers)                  # remove numbers
 removeURL <- function(x) gsub("http[[:alnum:]]*", "", x)     # remove URLs
 ### myCorpus <- tm_map(myCorpus, removeURL, lazy=TRUE) 
-myCorpus <- tm_map(myCorpus, content_transformer(removeURL))      # # remove as URLs
+myCorpus4 <- tm_map(myCorpus3, content_transformer(removeURL))      # # remove as URLs
 removeURL <- function(x) gsub("http[^[:space:]]*", "", x)    
-myCorpus <- tm_map(myCorpus, content_transformer(removeURL))       # remove as URLs que por ventura ainda apareçam
+myCorpus5 <- tm_map(myCorpus4, content_transformer(removeURL))       # remove as URLs que por ventura ainda apareçam
 removeNumPont <- function(x) gsub("[^[:alpha:][:space:]]*", "", x)
-myCorpus <- tm_map(myCorpus, content_transformer(removeNumPont))   # remove algum outro caracter de pontuação: O exemplo foi para caracteres em Inglês
-myCorpus <- tm_map(myCorpus, removePunctuation)
+myCorpus6 <- tm_map(myCorpus5, content_transformer(removeNumPont))   # remove algum outro caracter de pontuação: O exemplo foi para caracteres em Inglês
+myCorpus7 <- tm_map(myCorpus6, removePunctuation)
 
 # add two extra stop words: 'available' and 'via' 
 #myStopwords <- c(stopwords("english"), "available", "via") # PARA DOCUMENTO EM INGLÊS
 ## add extra stop words
-myStopwords <- c(stopwords("portuguese"), "ia", "faria", "ainda", "caminho", "alcool", "acid", "veic", "ferido") #myStopwords
-myStopwords <- setdiff(myStopwords, c("vou", "fazer"))       # remove 'vou' and 'fazer' from stopwords
-myCorpus <- tm_map(myCorpus, removeWords, myStopwords)       # remove stopwords from corpus
-dictCorpus <- myCorpus                                       #￼# keep a copy of corpus to use later as a dictionary for stem completion 
-myCorpus <- tm_map(myCorpus, stemDocument)                   # stem words
+myStopwords <- c(stopwords("portuguese"), "alcool", "acid", "veic", "ferido") #myStopwords
+myStopwords <- setdiff(myStopwords, c("ia", "faria"))       # remove 'vou' and 'fazer' from stopwords
+myCorpus8 <- tm_map(myCorpus7, removeWords, myStopwords)       # remove stopwords from corpus
+dictCorpus <- myCorpus8                                       #￼# keep a copy of corpus to use later as a dictionary for stem completion 
+myCorpus9 <- tm_map(myCorpus8, stemDocument)                   # stem words
 #inspect(myCorpus)                                           # resultado ainda trás um num excessivo documentos
-myCorpus <- tm_map(myCorpus, stemCompletion, dictionary=dictCorpus) # stem completion
+myCorpus10 <- tm_map(myCorpus9, stemCompletion, dictionary=dictCorpus) # stem completion
 # the following stem completion works in tm v0.6 
-tm_map(myCorpus, content_transformer(function(x, d)
+tm_map(myCorpus10, content_transformer(function(x, d)
   paste(stemCompletion(strsplit(stemDocument(x), ' ')[[1]], d), collapse = ' ')), dictCorpus)
 # fix up 1) differences between us and aussie english 2) general errors
 #myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = 'organiz', replacement = 'organ')
-inspect(myCorpus)
+inspect(myCorpus10)
 
 
 
 
 # inspect the first 5 documents (tweets) inspect(myCorpus[1:5]) 
 # The code below is used for to make text fit for paper width 
-for (i in 1:5) {
+for (i in 1:15) {
   cat(paste("[[", i, "]] ", sep = ""))
   #writeLines(myCorpus[[i]])
   writeLines(as.character(myCorpus[[i]]))
@@ -78,7 +80,7 @@ for (i in 1:5) {
 
 # ---- Building a Document-Term Matrix
 
-myDtm <- TermDocumentMatrix(myCorpus, control = list(wordLengths = c(1, Inf)))
+myDtm <- TermDocumentMatrix(myCorpus10, control = list(wordLengths = c(1, Inf)))
 inspect(myDtm)
 
 # get tf-idf weighting 

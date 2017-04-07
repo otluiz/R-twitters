@@ -94,10 +94,10 @@ erroBR101 <- 0.812
 erroBR232 <- 0.767
 
 ### calculando Prob. ser  Gravidade
-tx_Gravid101 = dfrnn.BR101$tx_RestVisibi * dfrnn.BR101$tx_CondPista * dfrnn.BR101$tx_TracadoVia * erroBR101 + dfrnn.BR101$Gravidade
+tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) * erroBR101 + dfrnn.BR101$Gravidade
 dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
 
-tx_Gravid232 = dfrnn.BR232$tx_RestVisibi * dfrnn.BR232$tx_CondPista * dfrnn.BR232$tx_TracadoVia * erroBR232 + dfrnn.BR232$Gravidade
+tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) * erroBR232 + dfrnn.BR232$Gravidade
 dfrnn.BR232["tx_Gravidade"] <- round(tx_Gravid232,3)
 ### Ordenar as colunas
 
