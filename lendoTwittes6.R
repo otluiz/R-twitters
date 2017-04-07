@@ -6,7 +6,7 @@ rm(list = ls())
 gc()
 
 #############################################
-### define variáveis para o token Twitter
+### define variáveis para o token Twitter: NOVA CONFIGURAÇÃO
 #############################################
 consumer_key    <- 	'gMgM98BADb4kiH4Y0M7AD5gw3'
 consumer_secret <- 'YA7l1GF6iLfdd8H0ybS9iBgBKXIhsWm0Nu89mHpnMnPcqpwYnZ'
@@ -33,6 +33,7 @@ dfTweets <- twListToDF(tweets)
 dim(dfTweets)
 names(dfTweets)
 
+write.csv(dfTweets,"./twitter/Twitter07042017.csv", row.names = FALSE)
 ### CARREGANDO O PACOTE: NLP (processamento lingugem natural) ###########
 library(tm)
 
