@@ -29,6 +29,7 @@ tweets <- userTimeline("PRF191PE", n = 3200)
 ####################                  ###################################
 ### converte os dados para data frame
 # tweets.df <- do.call("rbind", lapply(tweets, as.data.frame))
+
 dfTweets <- twListToDF(tweets)
 dim(dfTweets)
 names(dfTweets)
@@ -66,8 +67,6 @@ tm_map(myCorpus10, content_transformer(function(x, d)
 # fix up 1) differences between us and aussie english 2) general errors
 #myCorpus <- tm_map(myCorpus, content_transformer(gsub), pattern = 'organiz', replacement = 'organ')
 inspect(myCorpus10)
-
-
 
 
 # inspect the first 5 documents (tweets) inspect(myCorpus[1:5]) 
@@ -109,6 +108,8 @@ wordcloud(myCorpus, scale=c(5,0.5),
           ,colors=brewer.pal(10, "Dark2")
 )
 
+
+######################################################################################
 data("crude")
 # Term Document Matrix
 #tdm <- TermDocumentMatrix(crude)

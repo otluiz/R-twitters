@@ -17,14 +17,14 @@ attach(dfrnn)
 dfrnn.novo <- dfrnn[order(KMArredondado, Hour),]
 
 #### remover colunas desnecessárias
-dfrnn$TipoAuto <- NULL
-dfrnn$Delegacia <- NULL
-dfrnn$CondPista <- NULL
-dfrnn$TracadoVia <- NULL
-dfrnn$TipoAcident <- NULL
-dfrnn$CausaAcident <- NULL
-dfrnn$tx_DiaSemana <- NULL
-dfrnn$RestrVisibili <- NULL
+#dfrnn$TipoAuto <- NULL
+#dfrnn$Delegacia <- NULL
+#dfrnn$CondPista <- NULL
+#dfrnn$TracadoVia <- NULL
+#dfrnn$TipoAcident <- NULL
+#dfrnn$CausaAcident <- NULL
+#dfrnn$tx_DiaSemana <- NULL
+#dfrnn$RestrVisibili <- NULL
 
 
 ### Arredondar variáveis para 3 casas decimais
@@ -38,9 +38,9 @@ for(i in 1:nrow(dfrnn)){
 
 str(Hour)
 ### Gravar uma cópia para, os "for" são demorados
-write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
+#write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
 ### Ler a cópia gravada e prosseguir
-dfrnn <- read.csv("./data/prfParaRNN.csv")
+#dfrnn <- read.csv("./data/prfParaRNN.csv")
 attach(dfrnn)
 
 ### Corverter dados categóricos para numéricos
@@ -49,12 +49,6 @@ for(i in 1:nrow(dfrnn)){
   if(dfrnn[i,"Gravidade"] == "FALSE") { dfrnn[i,"Gravidade"] = 0 }
   if(dfrnn[i,"Gravidade"] == "TRUE" ) { dfrnn[i,"Gravidade"] = 1 }
 }
-
-### Gravar uma cópia para, os "for" são demorados
-write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
-### Ler a cópia gravada e prosseguir
-dfrnn <- read.csv("./data/prfParaRNN.csv")
-attach(dfrnn)
 
 ### ajustando a variável Dia da semana, tem que criar uma nova coluna
 for(i in 1:nrow(dfrnn)){
@@ -67,12 +61,6 @@ for(i in 1:nrow(dfrnn)){
   if(dfrnn[i, "DiaDaSemana"] == "Domingo") { dfrnn[i, "DiaSemana"] = 7 }
 }
 
-dfrnn$DiaDaSemana <- NULL
-
-### Ler a cópia gravada e prosseguir
-#dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
-attach(dfrnn)
-
 ### agrupando hora em períodos
 for (i in 1:nrow(dfrnn)){
   if (dfrnn[i,"Hour"] >= 0 & dfrnn[i,"Hour"] < 5 ) {dfrnn[i, "Periodo"] =  1 }   # Madrugada
@@ -81,29 +69,67 @@ for (i in 1:nrow(dfrnn)){
   if (dfrnn[i,"Hour"] >= 18 & dfrnn[i,"Hour"] < 24 ) {dfrnn[i, "Periodo"] =  4}  # Noite
 }
 
+
 ### Gravar uma cópia para, os "for" são demorados
 write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
 
+#####################################################################################
+### Ler a cópia gravada e prosseguir
+#dfrnn <- read.csv("./data/prfParaRNN.csv")
+attach(dfrnn)
+
+### Ler a cópia gravada e prosseguir
+#dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
+dfrn <- read.csv("./data/prfParaRNN.csv")
+attach(dfrn)
+
+
 ### Separar as BRs da rota pretendida (BR 101 X BR 232)
-dfrnn.BR101 <- subset(dfrnn,BR=='101')
-dfrnn.BR232 <- subset(dfrnn,BR=='232')
+dfrn.BR101 <- subset(dfrn,BR=='101')
+dfrn.BR232 <- subset(dfrn,BR=='232')
+dfrn.BR104 <- subset(dfrn,BR=='104')
+dfrn.BR116 <- subset(dfrn,BR=='116')
 
 
 ### incluindo o fator de precisão em cada data.frame Vindo da Árvore de Decisão
 erroBR101 <- 0.812
-erroBR232 <- 0.767
+erroBR232 <- 0.787
+erroBR104 <- 0.957
+erroBR116 <- 0.669
 
 ### calculando Prob. ser  Gravidade
+#<<<<<<< HEAD
 tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) * erroBR101 + dfrnn.BR101$Gravidade
 dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
 
 tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) * erroBR232 + dfrnn.BR232$Gravidade
+#=======
+## BR 101
+tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) *  erroBR101 + dfrnn.BR101$Gravidade
+dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
+
+## BR 232
+tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) *  erroBR232 + dfrnn.BR232$Gravidade
+#>>>>>>> 992b3051b34ae4ec6cbb2b0b861c2e22c0cb40d7
 dfrnn.BR232["tx_Gravidade"] <- round(tx_Gravid232,3)
-### Ordenar as colunas
+
+## BR 104
+tx_Gravid104 = (dfrn.BR104$tx_RestVisibi + dfrn.BR104$tx_CondPista + dfrn.BR104$tx_TracadoVia) *  erroBR104 + dfrn.BR104$Gravidade
+dfrn.BR104["tx_Gravidade"] <- round(tx_Gravid104,3)
+
+## BR 116
+tx_Gravid116 = (dfrn.BR116$tx_RestVisibi + dfrn.BR116$tx_CondPista + dfrn.BR116$tx_TracadoVia) *  erroBR116 + dfrn.BR116$Gravidade
+dfrn.BR116["tx_Gravidade"] <- round(tx_Gravid116,3)
+
+
 
 ### exportando dados CSV e ARFF (para Weka)
 write.csv(dfrnn.BR101,"./data/BR101/RNN.csv", row.names = FALSE)
 write.csv(dfrnn.BR232,"./data/BR232/RNN.csv", row.names = FALSE)
+
+## COM ";" SEPARADOR
+write.csv2(dfrn.BR104,"./data/BR104/RNN.csv", row.names = FALSE)
+write.csv2(dfrn.BR116,"./data/BR116/RNN.csv", row.names = FALSE)
 
 library(RWeka)
 write.arff(dfrnn.BR101,"../weka/BR101/RNN.arff", eol = "\n")
@@ -111,9 +137,9 @@ write.arff(dfrnn.BR232,"../weka/BR232/RNN.arff", eol = "\n")
 
 
 ######## Outras BRs #########
-BR104 <- subset(dfrnn,BR=='104')
+#BR104 <- subset(dfrnn,BR=='104')
 BR110 <- subset(dfrnn,BR=='110')
-BR116 <- subset(dfrnn,BR=='116')
+#BR116 <- subset(dfrnn,BR=='116')
 BR316 <- subset(dfrnn,BR=='316')
 BR407 <- subset(dfrnn,BR=='407')
 BR408 <- subset(dfrnn,BR=='408')

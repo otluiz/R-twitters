@@ -68,9 +68,10 @@ library(wordcloud)
 wordcloud(myCorpus, scale=c(5,0.5), 
           max.words=30, random.order=FALSE
           #, rot.per=0.35, use.r.layout=FALSE
-          ,colors=brewer.pal(10, "Dark2")
+          ,colors=brewer.pal.(10, "Set2")
 )
 
+#,colors=brewer.pal.info["Yellow",]
 data("crude")
 # Term Document Matrix
 #tdm <- TermDocumentMatrix(crude)
