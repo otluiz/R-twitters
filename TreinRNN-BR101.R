@@ -10,7 +10,7 @@ gc()
 
 install.packages("neuralnet")
 require(neuralnet)
-?neuralnet
+?neuralnet ## consultar sobre a rede neural
 
 dfrnn.BR101 <- read.csv("./data/BR101/RNN.csv") ## carrega o data frame
 dim(dfrnn.BR101)
