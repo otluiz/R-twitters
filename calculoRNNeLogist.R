@@ -6,7 +6,7 @@ rm(list = ls())
 gc()
 
 rm(dfrnn) ## remove antigos objetos
-dfrnn <- read.csv("./data/prfCalculoTaxas.csv") ## carrega o data frame
+dfrnn <- read.csv("./data/CalculaGravidade/prfCalculoTaxas.csv") ## carrega o data frame/home/otluix/workspace/R/data/CalculaGravidade
 #str(dfrnn)
 #levels(dfrnn$RestrVisibili) 
 #table(dfrnn$RestrVisibili)
@@ -15,16 +15,6 @@ attach(dfrnn)
 
 ### Verificar os dados
 dfrnn.novo <- dfrnn[order(KMArredondado, Hour),]
-
-#### remover colunas desnecessárias
-#dfrnn$TipoAuto <- NULL
-#dfrnn$Delegacia <- NULL
-#dfrnn$CondPista <- NULL
-#dfrnn$TracadoVia <- NULL
-#dfrnn$TipoAcident <- NULL
-#dfrnn$CausaAcident <- NULL
-#dfrnn$tx_DiaSemana <- NULL
-#dfrnn$RestrVisibili <- NULL
 
 
 ### Arredondar variáveis para 3 casas decimais
@@ -53,12 +43,12 @@ for(i in 1:nrow(dfrnn)){
 ### ajustando a variável Dia da semana, tem que criar uma nova coluna
 for(i in 1:nrow(dfrnn)){
   if(dfrnn[i, "DiaDaSemana"] == "Segunda-feira") { dfrnn[i, "DiaSemana"] = 1 }
-  if(dfrnn[i, "DiaDaSemana"] == "Terça-feira") { dfrnn[i, "DiaSemana"] = 2 }
-  if(dfrnn[i, "DiaDaSemana"] == "Quarta-feira") { dfrnn[i, "DiaSemana"] = 3 }
-  if(dfrnn[i, "DiaDaSemana"] == "Quinta-feira") { dfrnn[i, "DiaSemana"] = 4 }
-  if(dfrnn[i, "DiaDaSemana"] == "Sexta-feira") { dfrnn[i, "DiaSemana"] = 5 }
-  if(dfrnn[i, "DiaDaSemana"] == "Sábado") { dfrnn[i, "DiaSemana"] = 6 }
-  if(dfrnn[i, "DiaDaSemana"] == "Domingo") { dfrnn[i, "DiaSemana"] = 7 }
+  if(dfrnn[i, "DiaDaSemana"] == "Terça-feira")   { dfrnn[i, "DiaSemana"] = 2 }
+  if(dfrnn[i, "DiaDaSemana"] == "Quarta-feira")  { dfrnn[i, "DiaSemana"] = 3 }
+  if(dfrnn[i, "DiaDaSemana"] == "Quinta-feira")  { dfrnn[i, "DiaSemana"] = 4 }
+  if(dfrnn[i, "DiaDaSemana"] == "Sexta-feira")   { dfrnn[i, "DiaSemana"] = 5 }
+  if(dfrnn[i, "DiaDaSemana"] == "Sábado")        { dfrnn[i, "DiaSemana"] = 6 }
+  if(dfrnn[i, "DiaDaSemana"] == "Domingo")       { dfrnn[i, "DiaSemana"] = 7 }
 }
 
 ### agrupando hora em períodos
@@ -70,18 +60,76 @@ for (i in 1:nrow(dfrnn)){
 }
 
 
-### Gravar uma cópia para, os "for" são demorados
-write.csv(dfrnn,"./data/prfParaRNN.csv", row.names = FALSE)
+### Gravar uma cópia para, os "for" são demorados /home/otluix/workspace/R/data/NãoTemGravidade
+dfrnn$tx_DiaSemana <- NULL
+dfrnn$DiaDaSemana <- NULL
+write.csv(dfrnn,"./data/NãoTemGravidade/prfParaRNN.csv", row.names = FALSE)
 
 #####################################################################################
 ### Ler a cópia gravada e prosseguir
-#dfrnn <- read.csv("./data/prfParaRNN.csv")
+dfrnn <- read.csv("./data/NãoTemGravidade/prfParaRNN.csv")
 attach(dfrnn)
 
-### Ler a cópia gravada e prosseguir
-#dfrnn <- read.csv("./data/RedeNeural/prfParaRNN.csv")
-dfrn <- read.csv("./data/prfParaRNN.csv")
-attach(dfrn)
+## Cria uma coluna TipoAutoNum vinda da coluna TipoAuto (facto) 
+dfrnn <- data.frame(dfrnn, TipoAutoNum = as.numeric(dfrnn$TipoAuto))
+
+## granvando dados atualizados
+#dfrnn <- read.csv("./data/NãoTemGravidade/prfParaRNN.csv")
+
+## calcualndo taxas para TipoAutoNum
+qtdLinhas <- nrow(dfrnn)
+
+names(dfrnn)
+levels(dfrnn$TipoAutoNum)
+table(dfrnn$TipoAuto)
+
+for(i in 1:qtdLinhas){
+  if (dfrnn[i,7] == "Automóvel") { dfrnn[i,"TipoAutoNum"] = round(12898/qtdLinhas, 3)  }
+  if (dfrnn[i,7] == "Bicicleta") { dfrnn[i,"TipoAutoNum"] = round(255/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Caminhão") { dfrnn[i,"TipoAutoNum"] = round(6153/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Caminhão-Tanque") { dfrnn[i,"TipoAutoNum"] = round(22/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Caminhão-Trator") { dfrnn[i,"TipoAutoNum"] = round(5324/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Caminhonete") { dfrnn[i,"TipoAutoNum"] = round(4771/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Camioneta") { dfrnn[i,"TipoAutoNum"] = round(2551/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Carroça") { dfrnn[i,"TipoAutoNum"] = round(50/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Carro-de-mao") { dfrnn[i,"TipoAutoNum"] = round(1/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Charrete") { dfrnn[i,"TipoAutoNum"] = round(5/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Ciclomotor") { dfrnn[i,"TipoAutoNum"] = round(242/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Microônibus") { dfrnn[i,"TipoAutoNum"] = round(891/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Motocicletas") { dfrnn[i,"TipoAutoNum"] = round(9151/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Motoneta") { dfrnn[i,"TipoAutoNum"] = round(684/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Não identificado") { dfrnn[i,"TipoAutoNum"] = round(2113/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Não Informado") { dfrnn[i,"TipoAutoNum"] = round(2/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Não se Aplica") { dfrnn[i,"TipoAutoNum"] = round(1750/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Ônibus") { dfrnn[i,"TipoAutoNum"] = round(2922/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Quadriciclo") { dfrnn[i,"TipoAutoNum"] = round(2/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Reboque") { dfrnn[i,"TipoAutoNum"] = round(21/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Semi-Reboque") { dfrnn[i,"TipoAutoNum"] = round(56/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Trator de esteiras") { dfrnn[i,"TipoAutoNum"] = round(1/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Trator de rodas") { dfrnn[i,"TipoAutoNum"] = round(58/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Trator misto") { dfrnn[i,"TipoAutoNum"] = round(3/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Triciclo") { dfrnn[i,"TipoAutoNum"] = round(11/qtdLinhas, 3) }
+  if (dfrnn[i,7] == "Utilitário") { dfrnn[i,"TipoAutoNum"] = round(418/qtdLinhas, 3) }
+}
+
+#dfrnn$TipoAuto <- NULL
+#dfrnn <- data.frame(dfrnn, TipoAutoNum = as.numeric(dfrnn$TipoAuto)) apenas converte em número
+
+write.csv(dfrnn,"./data/NãoTemGravidade/prfParaRNN.csv", row.names = FALSE)
+
+
+###########################################################################################
+######################### Equação para predição Logística #################################
+###########################################################################################
+
+for(i in 1:nrow(dfrnn)){
+  fit <- glm(dfrnn$Gravidade ~ dfrnn$CondPista + dfrnn$TipoAcident + dfrnn$TracadoVia + dfrnn$TipoAuto, family = "binomial")
+  #dfrnn[i, "fit"] <- fit
+}
+
+
+
+
 
 
 ### Separar as BRs da rota pretendida (BR 101 X BR 232)
@@ -90,50 +138,6 @@ dfrn.BR232 <- subset(dfrn,BR=='232')
 dfrn.BR104 <- subset(dfrn,BR=='104')
 dfrn.BR116 <- subset(dfrn,BR=='116')
 
-
-### incluindo o fator de precisão em cada data.frame Vindo da Árvore de Decisão
-erroBR101 <- 0.812
-erroBR232 <- 0.787
-erroBR104 <- 0.957
-erroBR116 <- 0.669
-
-### calculando Prob. ser  Gravidade
-#<<<<<<< HEAD
-tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) * erroBR101 + dfrnn.BR101$Gravidade
-dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
-
-tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) * erroBR232 + dfrnn.BR232$Gravidade
-#=======
-## BR 101
-tx_Gravid101 = (dfrnn.BR101$tx_RestVisibi + dfrnn.BR101$tx_CondPista + dfrnn.BR101$tx_TracadoVia) *  erroBR101 + dfrnn.BR101$Gravidade
-dfrnn.BR101["tx_Gravidade"] <- round(tx_Gravid101,3)
-
-## BR 232
-tx_Gravid232 = (dfrnn.BR232$tx_RestVisibi + dfrnn.BR232$tx_CondPista + dfrnn.BR232$tx_TracadoVia) *  erroBR232 + dfrnn.BR232$Gravidade
-#>>>>>>> 992b3051b34ae4ec6cbb2b0b861c2e22c0cb40d7
-dfrnn.BR232["tx_Gravidade"] <- round(tx_Gravid232,3)
-
-## BR 104
-tx_Gravid104 = (dfrn.BR104$tx_RestVisibi + dfrn.BR104$tx_CondPista + dfrn.BR104$tx_TracadoVia) *  erroBR104 + dfrn.BR104$Gravidade
-dfrn.BR104["tx_Gravidade"] <- round(tx_Gravid104,3)
-
-## BR 116
-tx_Gravid116 = (dfrn.BR116$tx_RestVisibi + dfrn.BR116$tx_CondPista + dfrn.BR116$tx_TracadoVia) *  erroBR116 + dfrn.BR116$Gravidade
-dfrn.BR116["tx_Gravidade"] <- round(tx_Gravid116,3)
-
-
-
-### exportando dados CSV e ARFF (para Weka)
-write.csv(dfrnn.BR101,"./data/BR101/RNN.csv", row.names = FALSE)
-write.csv(dfrnn.BR232,"./data/BR232/RNN.csv", row.names = FALSE)
-
-## COM ";" SEPARADOR
-write.csv2(dfrn.BR104,"./data/BR104/RNN.csv", row.names = FALSE)
-write.csv2(dfrn.BR116,"./data/BR116/RNN.csv", row.names = FALSE)
-
-library(RWeka)
-write.arff(dfrnn.BR101,"../weka/BR101/RNN.arff", eol = "\n")
-write.arff(dfrnn.BR232,"../weka/BR232/RNN.arff", eol = "\n")
 
 
 ######## Outras BRs #########
