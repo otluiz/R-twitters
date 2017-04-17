@@ -128,11 +128,43 @@ kMediod<-function (content){
   return(pamResult)
 }
 
-#------------------- Sentiment Analysis -----------------------------------
+#------------------- Instaland qdap para sentiment analysis -----------------------------------
 install.packages("Stem")
-library(twitteR)
-library(sentiment)
+#library(sentiment)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(qdap, syuzhet, dplyr)
+pacman::p_load_current_gh(c("trinker/stansent", "trinker/sentimentr"))
 
+#pres_debates2012 #nrow = 2912
+tic <- function (pos = 1, envir = as.environment(pos)){
+  assign(".tic", Sys.time(), pos = pos, envir = envir)
+  Sys.time()
+}
+
+toc <- function (pos = 1, envir = as.environment(pos)) {
+  difftime(Sys.time(), get(".tic", , pos = pos, envir = envir))
+}
+
+id <- 1:2912
+
+source("http://bioconductor.org/biocLite.R")
+biocLite("Rgraphviz")
+# install.packages('tm')
+# install.packages('wordcloud')
+download.file("http://cran.cnr.berkeley.edu/src/contrib/Archive/Rstem/Rstem_0.4-1.tar.gz", "Rstem_0.4-1.tar.gz")
+install.packages("Rstem_0.4-1.tar.gz", repos=NULL, type="source")
+download.file("http://cran.r-project.org/src/contrib/Archive/sentiment/sentiment_0.2.tar.gz", "sentiment.tar.gz")
+install.packages("sentiment.tar.gz", repos=NULL, type="source")# Load libraries
+
+#library(wordcloud)
+#library(tm)
+library(plyr)
+library(ggplot2)
+library(grid)
+library(sentiment)
+library(Rgraphviz)
+
+#------------------- Sentiment Analysis -----------------------------------
 tSentimen<-function (content){
   twicorpus<-makeCorpus(content)
   dataframe<-data.frame(text=unlist(sapply(twicorpus, `[`, "content")), stringsAsFactors=F) # storing corpus as data frame
