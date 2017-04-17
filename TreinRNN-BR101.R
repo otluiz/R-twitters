@@ -15,6 +15,7 @@ require(neuralnet)
 dfrnn.BR101 <- read.csv("./data/BR101/RNN.csv") ## carrega o data frame
 dim(dfrnn.BR101)
 hist(dfrnn.BR101$tx_Gravidade)
+hist(dfrnn.BR101$Gravidade)
 attach(dfrnn.BR101) ## amarra as variáveis do data frame
 
 
@@ -24,9 +25,13 @@ attach(dfrnn.BR101) ## amarra as variáveis do data frame
 #erroBR104 <- 0.957
 #erroBR116 <- 0.669
 
-nn101 = neuralnet(formula = tx_Gravidade ~ tx_RestVisibi + tx_CondPista + tx_TracadoVia + Gravidade,
-              data = dfrnn.BR101, hidden = 3,
-               err.fct = "sse", linear.output = FALSE) ## sse porque o erro não é automaticamente quadratico
+nn101 = neuralnet(formula = Gravidade ~ tx_RestVisibi + tx_CondPista + tx_TracadoVia,
+                  data = dfrnn.BR101, hidden = 3,
+                  err.fct = "sse", linear.output = FALSE) ## sse porque o erro não é automaticamente quadratico
+
+#nn101 = neuralnet(formula = tx_Gravidade ~ tx_RestVisibi + tx_CondPista + tx_TracadoVia + Gravidade,
+##              data = dfrnn.BR101, hidden = 3,
+#               err.fct = "sse", linear.output = FALSE) ## sse porque o erro não é automaticamente quadratico
 
 #nn = neuralnet(formula = case ~ age+parity+induced+spontaneous, 
 #               data = infert, hidden = 2,

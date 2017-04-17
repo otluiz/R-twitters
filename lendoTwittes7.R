@@ -11,9 +11,10 @@ gc()
 library(SnowballC)
 library(twitteR)
 #-------[ TODO o dataset para ser separado em conjunto de treinamento e testes  ]------------------------
-df.Tweets <- read.csv("./twitter/twittesDF.csv") ## carrega o data frame
+df.Tweets <- read.csv("./twitter/Twitter07042017.csv") ## carrega o data frame
+df.graphs <- df.Tweets ## cópia para gerar grafos
 #fTweets <- as.data.frame(do.call(rbind, rdmTweets))
-names(dfTweets) <- c('text')
+names(df.Tweets) <- c('text')
 
 library(tm)
 
@@ -128,6 +129,10 @@ kMediod<-function (content){
 }
 
 #------------------- Sentiment Analysis -----------------------------------
+install.packages("Stem")
+library(twitteR)
+library(sentiment)
+
 tSentimen<-function (content){
   twicorpus<-makeCorpus(content)
   dataframe<-data.frame(text=unlist(sapply(twicorpus, `[`, "content")), stringsAsFactors=F) # storing corpus as data frame
@@ -137,7 +142,7 @@ tSentimen<-function (content){
 
 
 #Apenas por exemplo, edite a hashtag e o número de tweets para buscar
-get<-fetchHashtag("#Protesto",200) # fetching tweets of coca cola
+get<-fetchHashtag("#Protesto",200) # fetching tweets of Protesto
 
 freqPlot(get) #creating frequency plots
 corp<-makeCorpus(get) #creating corpus

@@ -124,7 +124,7 @@ write.csv(dfrnn,"./data/NãoTemGravidade/prfParaRNN.csv", row.names = FALSE)
 
 for(i in 1:nrow(dfrnn)){
   fit <- glm(dfrnn$Gravidade ~ dfrnn$CondPista + dfrnn$TipoAcident + dfrnn$TracadoVia + dfrnn$TipoAuto, family = "binomial")
-  #dfrnn[i, "fit"] <- fit
+  #dfrnn[i, "fit"] <- fit10
 }
 
 
