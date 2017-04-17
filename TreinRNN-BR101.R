@@ -25,7 +25,7 @@ attach(dfrnn.BR101) ## amarra as variáveis do data frame
 #erroBR104 <- 0.957
 #erroBR116 <- 0.669
 
-nn101 = neuralnet(formula = Gravidade ~ tx_RestVisibi + tx_CondPista + tx_TracadoVia,
+nn101 = neuralnet(formula = Gravidade ~ tx_RestVisibi + tx_CondPista + tx_TracadoVia + tx_CausaAcident + tx_TipoAcident,
                   data = dfrnn.BR101, hidden = 3,
                   err.fct = "sse", linear.output = FALSE) ## sse porque o erro não é automaticamente quadratico
 
