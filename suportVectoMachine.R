@@ -1,0 +1,114 @@
+# free memory
+rm(list=ls())
+gc()
+
+## To use SVM in R, I just created a random data with two features x and y in excel. 
+## I took all the values of x as just a sequence from 1 to 20 and the corresponding values of y as derived using the 
+## formula y(t)=y(t-1) + r(-1:9) where r(a,b) generates a random integer between a and b. I took y(1) as 3. 
+## The following code in R illustrates a set of sample generated values:
+
+x=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20)
+y=c(3,4,5,4,8,10,10,11,14,20,23,24,32,34,35,37,42,48,53,60)
+
+## Create a data frame of the data
+train = data.frame(x,y)
+
+# Let's see how our data looks like.
+# Plot the dataset
+plot(train, pch=16)
+
+
+## Linear Regression
+model <- lm(y ~ x, train)
+
+# Plot the model using abline
+abline(model)
+
+#######   SVM  #########
+## The use SVM in R, we have a package e1701. The package is not preinstalled, hence one needs to run the line
+## 'install.packages("e1701")' to install the package and then import the package contents using the library
+## command. The syntax of SVM package is quite similar to linar regression. We use SVM functin here.
+install.packages("/home/otluix/Downloads/e1071_1.6-8.tar.gz", dep = TRUE)
+library(e1071)
+
+## Fit a model. The function syntax is very similar tolm  funtion
+model_svm <- svm(y ~ x, train)
+
+## Use the predictions on the data
+pred <- predict(model_svm, train)
+
+## Plot the predictions and the plot to see our model fit
+points(train$x, pred, col = "blue", pch = 4)
+
+## The points the actual values much more closely than the ablice.
+## Can we verify and directly calculate rmse
+## Linear model has a residuals part which we can extract and directly calculate rmse
+error <- model$residuals
+
+lm_error <- sqrt(mean(error^2)) 
+lm_error ## 3.832974
+
+## For SVM, we have to manually calculate the difference between actual values (train$y) with our predictions (pred)
+error_2 <- train$y - pred
+svm_error <- sqrt(mean(error_2^2))
+svm_error ## 2.696281
+
+## In this case, the rmse for linear model is ~3.83 whereas our SVM model has a lower error of ~2.7.
+## A straightforward (HONESTAMENTE) implementation of SVM has an accuracy higher than the linear regression model.
+## However, the SVM model goes far beyond that. We can further improve our SVM model and tune it so that the error
+## is even lower. We will now deeper into the SVM function and the tune function. We can specify the values for the
+## cost parameter and epsilon which is 0.1 by default. A simple way is to try for each value of epsilon between 0 and 1
+## (I will steps of 0.01) and similarly try for cost function from 4 to 2^9 (I will take exponential steps of 2 here).
+## I am taking 101 values of epsilon and 8 values of cost funtion. I will thus be testing 808 models and see which ones
+## perfoms best. The code may take a short while to run all the models and find best version.
+## The corresponding code will be
+svn_tune <- tune(svm, y ~ x, data = train, ranges = list(epsilon = seq(0, 1, 0.01), cost = 2^(2:9)))
+print(svn_tune)
+
+#Parameter tuning of ‘svm’:
+#  
+#  - sampling method: 10-fold cross validation 
+#
+#  - best parameters:
+#  epsilon cost
+#  0    8
+#
+#  - best performance: 2.546324 
+## This best performance denotes the MSE. The corresponding RMSE is 1.602951 which is square root of MSE
+## An advantage of tuning in R is that it lets us extract the best function directly.
+## We don't have to do anything and just extract the best function from the svm_tune.
+## We can now see the improvement in our model calculating its RMSE error using the following code
+
+## The best model
+best_mod <- svn_tune$best.model
+best_mod_pred <- predict(best_mod, train)
+
+error_best_mod <- train$y - best_mod_pred
+
+## this value can be different on your computer
+## because the tune method randomly shuffles the data
+best_mod_RMSE <- sqrt(mean(error_best_mod^2))
+best_mod_RMSE ## 1.159186
+
+## This tuning method is known as grid search. R runs all various models with all the possible values of epsilon
+## and cost funtion in the specified range and gives us the model which has the lowes error.
+## We can also plot our tuning model to see the performance of all the models together
+
+plot(svn_tune)
+
+## This plot shows the performance of various models using color coding. 
+## Darker regions imply better accuracy. The use of this plot is to determine the possible range where we can 
+## narrow down our search to and try further tuning if required. 
+## For instance, this plot shows that I can run tuning for epsilon in the new range of 0 to 0.2 and while 
+## I’m at it, I can move in even lower steps (say 0.002) but going further may lead to overfitting so I can stop at this point. 
+## From this model, we have improved on our initial error of 2.69 and come as close as 1.29 which is about half of our original error in SVM. 
+## We have come very far in our model accuracy. Let’s see how the best model looks like when plotted.
+
+plot(train, pch = 16) ## 
+points(train$x, best_mod_pred, col = "blue", pch = 4) 
+
+## Visually, the points predicted by our tuned model almost follow the data. This is the power os SVM and are just seeing this for data with two features.
+## Imagine the abilities of the model with more number of complex features!!
+
+
+
