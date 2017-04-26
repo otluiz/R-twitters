@@ -54,12 +54,12 @@ myCorpus7 <- tm_map(myCorpus6, removePunctuation)
 # add two extra stop words: 'available' and 'via' 
 #myStopwords <- c(stopwords("english"), "available", "via") # PARA DOCUMENTO EM INGLÊS
 ## add extra stop words
-myStopwords <- c(stopwords("portuguese"), "alcool", "acid", "veic", "ferido") #myStopwords
+myStopwords <- c(stopwords("portuguese"), "h") #myStopwords
 myStopwords <- setdiff(myStopwords, c("ia", "faria"))       # remove 'vou' and 'fazer' from stopwords
-myCorpus8 <- tm_map(myCorpus7, removeWords, myStopwords)       # remove stopwords from corpus
-dictCorpus <- myCorpus8                                       #￼# keep a copy of corpus to use later as a dictionary for stem completion 
-myCorpus9 <- tm_map(myCorpus8, stemDocument)                   # stem words
-#inspect(myCorpus)                                           # resultado ainda trás um num excessivo documentos
+myCorpus8 <- tm_map(myCorpus7, removeWords, myStopwords)    # remove stopwords from corpus
+dictCorpus <- myCorpus8                                     # keep a copy of corpus to use later as a dictionary for stem completion 
+myCorpus9 <- tm_map(myCorpus8, stemDocument)                # stem words
+#inspect(myCorpus)                                          # resultado ainda trás um num excessivo documentos
 myCorpus10 <- tm_map(myCorpus9, stemCompletion, dictionary=dictCorpus) # stem completion
 # the following stem completion works in tm v0.6 
 tm_map(myCorpus10, content_transformer(function(x, d)

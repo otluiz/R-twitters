@@ -1,4 +1,4 @@
-#############################################
+y#############################################
 setwd("~/workspace/R/")
 
 # free memory
@@ -25,10 +25,11 @@ library(tm)
 #meuCorpus[[3]]$content 
 
 
-##########################################################################
-###################   PREPROCESSAMENTO   #################################
-####################   limpar o textos  ##################################
-##########################################################################
+########################################################################################
+#################################   PREPROCESSAMENTO   #################################
+########################################################################################
+#################################   limpar o textos  ###################################
+########################################################################################
 makeCorpus <- function(text){ #Function for making corpus and cleaning the tweets fetched
   #twitterdf <- do.call("rbind", lapply(text, as.data.frame)) #store the fetched tweets as a data frame
   #twitterdf$text <- sapply(twitterdf$text,function(row) iconv(row, "latin1", "ASCII", sub=""))#Removing emoticons from tweets
@@ -44,12 +45,13 @@ makeCorpus <- function(text){ #Function for making corpus and cleaning the tweet
   meuCorpus <- tm_map(meuCorpus, removeNumbers)
   meuCorpus <- tm_map(meuCorpus, removePunctuation)
   meuCorpus <- tm_map(meuCorpus, toSpace, "http[[:alnum:]]*") #remove url from tweets
-  meuCorpus <- tm_map(meuCorpus,removeWords,stopwords("en"))
+  meuCorpus <- tm_map(meuCorpus,removeWords,stopwords("pt"))
   meuCorpus <- tm_map(meuCorpus, content_transformer(tolower))
   return(meuCorpus)
 }
-
-#---- Executa a função e carrega numa variável-----------
+########################################################################################
+####################  Executa a função e carrega numa variável  ########################
+########################################################################################
 get <- makeCorpus(df.Tweets$text)
 
 ###### pesquisa alguns termos
@@ -57,7 +59,9 @@ for (i in 1:100){
   cat(paste("[[", i, "]] ", sep=""))
   writeLines(strwrap(corp[[i]], width=73))
 }
-
+########################################################################################
+################  Cria um gráfico tipo núvem de palavras coloridas  ####################
+########################################################################################
 #Wordcloud
 library(RColorBrewer)
 library(wordcloud)
@@ -73,8 +77,9 @@ makeWordcloud<-function (getText){ #plotting wordcloud
   wordcloud(words=names(wordFreq), freq=wordFreq, min.freq=3, random.order=F, random.color = TRUE, max.words=50, colors=brewer.pal(10, "Dark2")) #colors=grayLevels)
 }
 
-
-#-------------------- Palavra mais frequentes ---------------
+########################################################################################
+#########################  Calcula as Palavras mais frequentes   #######################
+########################################################################################
 library(ggplot2)
 freqPlot<-function (getText){ #frequency plot of word count
   twicorpus<-makeCorpus(getText)
@@ -85,8 +90,10 @@ freqPlot<-function (getText){ #frequency plot of word count
   df <- data.frame(term=names(termFrequency), freq=termFrequency)
   ggplot(df, aes(x=term, y=freq)) + geom_bar(stat="identity") + coord_flip()
 }
-
-#-------------------- Clustering ----------------------------
+########################################################################################
+##########################  Agrupa as palavras por assuntos   ##########################
+########################################################################################
+#Clustering
 hCluster<-function (content){ #hierarchical clustering 
   twicorpus<-makeCorpus(content)
   myTdm<-TermDocumentMatrix(twicorpus, control=list(wordLengths=c(4,Inf)))
