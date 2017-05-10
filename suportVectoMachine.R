@@ -110,5 +110,14 @@ points(train$x, best_mod_pred, col = "blue", pch = 4)
 ## Visually, the points predicted by our tuned model almost follow the data. This is the power os SVM and are just seeing this for data with two features.
 ## Imagine the abilities of the model with more number of complex features!!
 
+## Summary
 
+## SVM is a powerful technique and especially useful for data whose distribution is unknown (also known as non-regulatity in data).
+## Because the example consedered here consisted of only two features, the SVM fitted by R is also known as linear SVM. 
+## SVM is powered by a kernel for daling with various kinds of data and its kernel can also be set durin model tuning.
+## Some such examples include gaussian and radial. Hence, SVM can also be used for non-linear data and does not require any assumptions about its functional form.
+## Because we separate data with the maximum possible margin, the model becomes very robust and can deal with incongruencies such as noisy test data or biased train data.
+## We can also interpret the results produced by SVM through visualization. A common disadvantage with SVM is associated with its tuning.
+## The level of accuracy in predicting over the training data has to be defined in our data. Because our example was custom generated data, we went ahead and tried 
+## 
 
