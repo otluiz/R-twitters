@@ -21,20 +21,81 @@ library(ROAuth)
 token <- setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 
 ### carrega a time line do Tweeter
-tweets <- userTimeline("PRF191PE", n = 3200)
+tweetsPE <- userTimeline("PRF191PE", n = 500)
+tweetsPB <- userTimeline("@PRF191PB", n = 500)
+tweetsAL <- userTimeline("PRF191ALAGOAS", n = 500)
+tweetsRN <- userTimeline("PRF191RN", n = 500)
+tweetsCE <- userTimeline("PRF191CEARA", n = 500)
+tweetsBA <- userTimeline("@PRFBAHIA", n = 500)
+tweetsSP <- userTimeline("191SAOPAULO", n = 500)
+tweetsMG <- userTimeline("PRF191MG", n = 500)
+tweetsPR <- userTimeline("PRF191PR", n = 500)
+tweetsGO <- userTimeline("PRFGOIAS", n = 500)
+tweetsRJ <- userTimeline("@PRFRJ191", n = 500)
 
 
 #########################################################################
-###################  LIMPANDO O TEXTO   #################################
-####################                  ###################################
+###################  CRIANDO DATA FRAMES   ##############################
+#########################################################################
 ### converte os dados para data frame
 # tweets.df <- do.call("rbind", lapply(tweets, as.data.frame))
 
-dfTweets <- twListToDF(tweets)
-dim(dfTweets)
-names(dfTweets)
+dfPE.tweets <- twListToDF(tweetsPE)
+dfPB.tweets <- twListToDF(tweetsPB)
+dfAL.tweets <- twListToDF(tweetsAL)
+dfRN.tweets <- twListToDF(tweetsRN)
+dfCE.tweets <- twListToDF(tweetsCE)
+dfBA.tweets <- twListToDF(tweetsBA)
+dfSP.tweets <- twListToDF(tweetsSP)
+dfMG.tweets <- twListToDF(tweetsMG)
+dfPR.tweets <- twListToDF(tweetsPR)
+dfGO.tweets <- twListToDF(tweetsGO)
+dfRJ.tweets <- twListToDF(tweetsRJ)
 
-write.csv(dfTweets,"./twitter/Twitter07042017.csv", row.names = FALSE)
+dim(dfPE.tweets)
+dim(dfPB.tweets)
+dim(dfAL.tweets)
+dim(dfRN.tweets)
+dim(dfCE.tweets)
+dim(dfBA.tweets)
+dim(dfSP.tweets)
+dim(dfMG.tweets)
+dim(dfPR.tweets)
+dim(dfGO.tweets)
+dim(dfRJ.tweets)
+
+
+names(dfPE.tweets)
+
+## Salva os data frames no formato csv
+library(ggplot2)
+myList <- list(dfPE.tweets, dfPB.tweets, dfAL.tweets, dfRN.tweets, dfCE.tweets,
+               dfBA.tweets, dfSP.tweets, dfMG.tweets, dfPR.tweets, dfGO.tweets,
+               dfRJ.tweets)
+mapply(write.csv, myList, file=paste0(names(myList), '.csv'))
+
+
+write.csv(dfPE.tweets,"./data/Twitter/Twitter28ABR2017PE.csv", row.names = FALSE)
+write.csv(dfPB.tweets,"./data/Twitter/Twitter8ABR2017PB.csv", row.names = FALSE)
+write.csv(dfAL.tweets,"./data/Twitter/Twitter28ABR2017AL.csv", row.names = FALSE)
+write.csv(dfRN.tweets,"./data/Twitter/Twitter28ABR2017RN.csv", row.names = FALSE)
+write.csv(dfCE.tweets,"./data/Twitter/Twitter28ABR2017CE.csv", row.names = FALSE)
+write.csv(dfBA.tweets,"./data/Twitter/Twitter28ABR2017BA.csv", row.names = FALSE)
+write.csv(dfSP.tweets,"./data/Twitter/Twitter28ABR2017SP.csv", row.names = FALSE)
+write.csv(dfMG.tweets,"./data/Twitter/Twitter28ABR2017MG.csv", row.names = FALSE)
+write.csv(dfPR.tweets,"./data/Twitter/Twitter28ABR2017PR.csv", row.names = FALSE)
+write.csv(dfGO.tweets,"./data/Twitter/Twitter28ABR2017GO.csv", row.names = FALSE)
+write.csv(dfRJ.tweets,"./data/Twitter/Twitter28ABR2017RJ.csv", row.names = FALSE)
+
+## Juntando tudo em um único data frame - backup para posteriormente fazer um KDT
+library(plyr)
+prfPEPBALRNCEBASPRJPR <- join_all(list (dfPE.tweets, dfPB.tweets, dfAL.tweets, dfRN.tweets, dfCE.tweets, 
+                                  dfBA.tweets, dfSP.tweets, dfMG.tweets, dfRJ.tweets, dfPR.tweets, 
+                                  dfGO.tweets))
+
+
+
+
 ### CARREGANDO O PACOTE: NLP (processamento lingugem natural) ###########
 library(tm)
 

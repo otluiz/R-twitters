@@ -10,11 +10,11 @@ gc()
 ### Separação dos Data frames. Estes data frames são gerados pelo script
 ### calculoRNNeLogist.R onde a equação e a variável tx_Gravid232 é gerado
 df.Br101 <- read.csv("./data/BR101/RNN.csv")
-<<<<<<< HEAD
+#<<<<<<< HEAD
 df.Br232 <- read.csv("./data/BR232/RNN.csv")
-=======
+#=======
 df.Br232 <- read.csv("./data/BR232/RNN.csv") ## separador "," (vírgula)
->>>>>>> 992b3051b34ae4ec6cbb2b0b861c2e22c0cb40d7
+#>>>>>>> 992b3051b34ae4ec6cbb2b0b861c2e22c0cb40d7
 
 df.Br116 <- read.csv2("./data/BR116/RNN.csv") ## separador ";" (ponto e vírgula)
 #################################################################################
@@ -82,7 +82,7 @@ salvaMatriz <- function(rs) {
     nomePart = paste("./data/BR101/MatrizGravidade3D",i, sep = "", collapse = NULL) 
     tipoExte = ".csv"
     nomeArq = paste(nomePart, tipoExte, sep = "") 
-    write.csv(dfs,nomeArq, row.names = TRUE)
+    write.csv2(dfs,nomeArq, row.names = TRUE)
   }
 }
 

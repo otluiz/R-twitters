@@ -28,8 +28,6 @@ df.Br101 <- subset(df,BR=='101')
 df.Br232 <- subset(df,BR=='232')
 df.Br104 <- subset(df,BR=='104')
 
-
-
 write.csv(df.Br101,"./data/BR101/RNNLiteral.csv", row.names = FALSE)
 write.csv(df.Br232,"./data/BR232/RNNLiteral.csv", row.names = FALSE)
 write.csv(df.Br104,"./data/BR104/RNNLiteral.csv", row.names = FALSE)
