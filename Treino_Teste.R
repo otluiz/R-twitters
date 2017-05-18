@@ -4,7 +4,7 @@ setwd("~/workspace/R/src")
 rm(list = ls())
 gc()
 
-#-------[ TODO o dataset para ser separado em conjunto de treinamento e testes  ]------------------------
+#-------[TODO o dataset para ser separado em conjunto de treinamento e testes]------------------------
 dfT <- read.csv("./data/prfCalculoTaxas2.csv") ## carrega o data frame
 
 attach(dfT)

@@ -17,6 +17,8 @@ df.Br232 <- read.csv("./data/BR232/RNN.csv") ## separador "," (vírgula)
 #>>>>>>> 992b3051b34ae4ec6cbb2b0b861c2e22c0cb40d7
 
 df.Br116 <- read.csv2("./data/BR116/RNN.csv") ## separador ";" (ponto e vírgula)
+
+df.Br104 <- read.csv2("./data/BR104/RNN.csv") ## separador ";" (ponto e vírgula)
 #################################################################################
 ######################### Equação para predição #################################
 #################################################################################
@@ -112,15 +114,17 @@ rs = criarMatrizFinal2(l,c,a)
 ################################################################################
 ### Salvar cada dia da semana em um arquivo diferente, ex.: MatrizMortos3d1.csv, MatrizMortos3D2.csv...
 ### Cada linha e coluna estão numeradas a partir do Km(0) e Hora(0)
+library(xlsx)
 salvaMatriz <- function(rs) {
   for(i in 1:7){
     dfs <- as.data.frame(rs[,,i])
     colnames(dfs) = c(0:(c -1))
     row.names(dfs) = c(0:(l -1))
     nomePart = paste("./data/BR232/MatrizGravidade3D",i, sep = "", collapse = NULL) 
-    tipoExte = ".csv"
+    #tipoExte = ".csv"
+    tipoExte = ".xlsx"
     nomeArq = paste(nomePart, tipoExte, sep = "") 
-    write.csv(dfs,nomeArq, row.names = TRUE)
+    write.xlsx(dfs,nomeArq, row.names = TRUE)
   }
 }
 
@@ -158,6 +162,46 @@ salvaMatriz <- function(rs) {
     tipoExte = ".csv"
     nomeArq = paste(nomePart, tipoExte, sep = "") 
     write.csv2(dfs,nomeArq, row.names = TRUE)
+  }
+}
+
+salvaMatriz(rs)  ## grava no diretŕio ./data/Br116 arquivos do tipo MatrizGravidade3D -> correspondente a matriz de mortos de segunda-feira
+
+
+################################################################################
+############################             #######################################
+###########################     BR 104      ####################################
+############################             #######################################
+################################################################################
+#nrow(df.Br104)
+#### Criar uma matriz já inicializada com todas as entradas em zero
+criarMatrizFinal2 <- function(lin,col,alt){
+  r <- criarMatriz(lin,col,alt)
+  for(i in 1:nrow(df.Br104)){
+    r[df.Br104[i,3]+1,df.Br104[i,4]+1,df.Br104[i,10]] <- r[df.Br104[i,3]+1,df.Br104[i,4]+1,df.Br104[i,10]] + df.Br104[i,12]
+  }
+  return(r)
+}
+
+l = 24  ## hora 0 - 23
+c = max(df.Br104$KMArredondado)+1 ## quilômetro máximo da rodovia
+a = 7    ## correspondente aos dias da semana
+rs = criarMatrizFinal2(l,c,a)
+
+################################################################################
+### Salvar cada dia da semana em um arquivo diferente, ex.: MatrizMortos3d1.csv, MatrizMortos3D2.csv...
+### Cada linha e coluna estão numeradas a partir do Km(0) e Hora(0)
+library(xlsx)
+salvaMatriz <- function(rs) {
+  for(i in 1:7){
+    dfs <- as.data.frame(rs[,,i])
+    colnames(dfs) = c(0:(c -1))
+    row.names(dfs) = c(0:(l -1))
+    nomePart = paste("./data/BR104/MatrizGravidade3D",i, sep = "", collapse = NULL) 
+    #tipoExte = ".csv"
+    tipoExte = ".xlsx"
+    nomeArq = paste(nomePart, tipoExte, sep = "") 
+    write.xlsx(dfs,nomeArq, row.names = TRUE)
   }
 }
 

@@ -11,19 +11,26 @@ df <- read.csv("./data/RedeNeural/prfParaRNN.csv")
 attach(df)
 
 ### agrupando hora em períodos
-for (i in 1:nrow(df)){
-  if (df[i,"Hour"] >= 0 & df[i,"Hour"] < 5 ) {df[i, "Periodo"] =  1 }   # Madrugada
-  if (df[i,"Hour"] >= 5 & df[i,"Hour"] < 12 ) {df[i, "Periodo"] =  2 }  # Manhã
-  if (df[i,"Hour"] >= 12 & df[i,"Hour"] < 18 ) {df[i, "Periodo"] =  3 } # Tarde
-  if (df[i,"Hour"] >= 18 & df[i,"Hour"] < 24 ) {df[i, "Periodo"] =  4}  # Noite
-}
+#for (i in 1:nrow(df)){
+#  if (df[i,"Hour"] >= 0 & df[i,"Hour"] < 5 ) {df[i, "Periodo"] =  1 }   # Madrugada
+#  if (df[i,"Hour"] >= 5 & df[i,"Hour"] < 12 ) {df[i, "Periodo"] =  2 }  # Manhã
+#  if (df[i,"Hour"] >= 12 & df[i,"Hour"] < 18 ) {df[i, "Periodo"] =  3 } # Tarde
+#  if (df[i,"Hour"] >= 18 & df[i,"Hour"] < 24 ) {df[i, "Periodo"] =  4}  # Noite
+#}
 ### Separar as BRs da rota pretendida (BR 101 X BR 232)
 df.BR101 <- subset(df,BR=='101')
 df.BR232 <- subset(df,BR=='232')
+df.BR104 <- subset(df,BR=='104')
 
-### incluindo o fator de precisão em cada data.frame
-df.BR101['Precisão'] <- 0.812
-df.BR232['Precisão'] <- 0.767
+### incluindo o fator de precisão (coluna Precision)
+## caminho: /home/otluiz/Área de Trabalho/ADecisao-Weka/ArvoreBR.txt
+df.BR101['TxErro'] <- 0.812
+df.BR116['TxErro'] <- 0.669
+df.BR232['TxErro'] <- 0.787
+
+df.BR104['TxErro'] <- 0.957
+
+df.BR423['TxErro'] <- 0.693
 .
 .
 .
@@ -68,8 +75,8 @@ criarMatriz <- function(lin,col,alt) {
 #### Criar uma matriz já inicializada com todas as entradas em zero
 criarMatrizFinal <- function(lin,col,alt){
   r <- criarMatriz(lin,col,alt)
-  for(i in 1:nrow(df.Br101)){
-    r[df.Br101[i,8]+1,df.Br101[i,9]+1,df.Br101[i,10]] <- r[df.Br101[i,8]+1,df.Br101[i,9]+1,df.Br101[i,10]] + df.Br101[i,7]
+  for(i in 1:nrow(df.BR104)){
+    r[df.BR104[i,8]+1,df.BR104[i,9]+1,df.BR104[i,10]] <- r[df.BR104[i,8]+1,df.BR104[i,9]+1,df.BR104[i,10]] + df.BR104[i,7]
   }
   return(r)
 }
